@@ -1,0 +1,152 @@
+openapi: 3.0.0
+info:
+  title: Payments demo apigee
+  version: 0.0.1
+servers:
+  - url: https://34.117.153.64.nip.io
+    description: Apigee payments
+  - url: http://65.21.59.52:30008/api/v1/
+    description: Backend payment
+paths:
+  /payments:
+    get:
+      summary: Получение всех платежей
+      tags:
+        - Payments
+      operationId: getAllPayments
+      responses:
+        '200':
+          description: Succes answer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Payments"
+        'default':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Создание нового платежа
+      tags:
+        - Payments
+      operationId: createPayment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Payment"
+      responses:
+        '200':
+          description: Success answer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Payment"
+        'default':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /payments/{id}:
+    get:
+      summary: Медот получения платежа по идентефикатору
+      tags:
+        - Payments
+      operationId: getPaymentById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор платежа
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Success answer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Payment"
+        'default':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Медот получения платежа по идентефикатору
+      tags:
+        - Payments
+      operationId: deletePaymentById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор платежа
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Success delete
+          content:
+            application/json: {}
+        'default':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+
+
+components:
+  schemas:
+    Payment:
+      type: object
+      required:
+        - sender
+        - receiver
+      properties:
+        id:
+          type: integer
+          example: 1
+        sender:
+          type: string
+          example: Mykola
+        receiver:
+          type: string
+          example: SenseBank
+
+    Payments:
+      type: array
+      items:
+        $ref: "#/components/schemas/Payment"
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+
+
+
+
+
+
+
+
+
+
+
+
+
